@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="row">
+        <div class="col-5 mx-auto">
+            <form #formDangKy="ngForm" (ngSubmit)="DangKy(formDangKy.value)">
+                <h4 class="display-4">Đăng ký</h4>
+                <div class="form-group">
+                    <label for="">Tài khoản</label>
+                    <input type="text" required class="form-control" #taikhoan='ngModel' name="TaiKhoan" ngModel>
+                    <div *ngIf="taikhoan.errors && (taikhoan.touched || taikhoan.dirty)">
+                        <div class="alert alert-danger" *ngIf="taikhoan.errors.required">
+                            Vui lòng nhập tài khoản
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Mật khẩu</label>
+                    <input type="text" required class="form-control" #matkhau='ngModel' minlength="10" maxlength="20"
+                        name="MatKhau" ngModel>
+                    <div *ngIf="matkhau.errors && (matkhau.touched || matkhau.dirty)">
+                        <!-- kiểm tra rỗng -->
+                        <div class="alert alert-danger" *ngIf="matkhau.errors.required">Vui lòng nhập mật khẩu</div>
+                        <!-- kiểm tra min max -->
+                        <div class="alert alert-danger" *ngIf="matkhau.errors.minlength || matkhau.errors.maxlength">
+                            Mật khẩu phải từ 10 đến 20 ký tự
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Họ tên</label>
+                    <input type="text" class="form-control" required name="HoTen" ngModel [pattern]='"^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" +
+                    "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
+                    "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$"' #hoten='ngModel'>
+                    <div *ngIf="hoten.errors && (hoten.touched || hoten.dirty)">
+                        <!-- kiểm tra rỗng -->
+                        <div class="alert alert-danger" *ngIf="hoten.errors.required">Vui lòng nhập họ tên</div>
+                        <!-- kiểm tra nhập chữ -->
+                        <div *ngIf="hoten.errors.pattern" class="alert alert-danger">Vui lòng nhập họ tên là chữ</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="text" class="form-control" required #email='ngModel' name="email" ngModel>
+                    <div *ngIf="email.errors && (email.touched || email.dirty)">
+                        <!-- kiểm tra rỗng -->
+                        <div class="alert alert-danger" *ngIf="email.errors.required">Vui lòng nhập Email</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">SĐT</label>
+                    <input type="text" class="form-control" name="SoDT" ngModel>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Loại người dùng: </label>
+                    <input type="radio" ngModel value="KhachHang" name="MaLoaiNguoiDung"> Khách hàng
+                    <input type="radio" ngModel value="QuanTri" name="MaLoaiNguoiDung"> Admin
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-success" type="submit" [disabled]="formDangKy.invalid">Đăng ký</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tài khoản</th>
+                <th>Mật khẩu</th>
+                <th>Email</th>
+                <th>Họ tên</th>
+                <th>Số ĐT</th>
+                <th>Mã loại người dùng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let nguoidung of mangNguoiDungDangKy">
+                <td>{{nguoidung.TaiKhoan}}</td>
+                <td>{{nguoidung.MatKhau}}</td>
+                <td>{{nguoidung.Email}}</td>
+                <td>{{nguoidung.HoTen}}</td>
+                <td>{{nguoidung.SoDT}}</td>
+                <td>{{nguoidung.MaLoaiNguoiDung}}</td>
+                <td>
+                    <button #btnCapNhat class="btn btn-success" (click)="CapNhat(btnCapNhat)"
+                        [attr.data-taikhoan]="nguoidung.TaiKhoan" [attr.data-matkhau]="nguoidung.MatKhau"
+                        [attr.data-email]="nguoidung.Email" [attr.data-hoten]="nguoidung.HoTen"
+                        [attr.data-sodt]="nguoidung.SoDT" [attr.data-maloaind]="nguoidung.MaLoaiNguoiDung">Cập
+                        nhật</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
